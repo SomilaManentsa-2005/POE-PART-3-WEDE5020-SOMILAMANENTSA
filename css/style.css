@@ -544,3 +544,10 @@ a {
     color: var(--primary-dark);
     margin-top: 0;
 }
+.error-message {
+    display: block;
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+    font-weight: 500;
+}

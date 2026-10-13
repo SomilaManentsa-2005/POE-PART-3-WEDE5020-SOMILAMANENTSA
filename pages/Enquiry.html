@@ -6,7 +6,13 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <title>EnquiryPage</title>
+
+    <script src="../JavaScript/main.js" defer></script>
+    <script src="../JavaScript/lightbox.js" defer></script>
+    <script src="../JavaScript/search.js" defer></script>
+    <script src="../JavaScript/validation.js" defer></script>
+
+    <title>Enquiry | Kasi-Tech Solutions</title>
 </head>
 <body>
     
@@ -22,7 +28,7 @@
                 <a href="../index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
-                <a href="enquiry.html">Enquiry</a>
+                <a href="enquiry.html" aria-current="page">Enquiry</a>
                 <a href="contactus.html">Contact Us</a>
             </nav>
         </div>
@@ -50,16 +56,19 @@
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label for="fullname">Full Name:</label>
                             <input type="text" id="fullname" name="fullname" placeholder="e.g. Somila Manentsa" required>
+                            <span class="error-message" id="nameError"></span>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label for="email">Email Address:</label>
                             <input type="email" id="email" name="email" placeholder="e.g. somilamanentsa@example.com" required>
+                            <span class="error-message" id="EmailError"></span>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label for="phone">Phone / WhatsApp Number:</label>
                             <input type="tel" id="phone" name="phone" placeholder="e.g. 072 763 3457">
+                            <span class="error-message" id="phonenumberError"></span>
                         </div>
 
                         <div class="form-group">
@@ -83,7 +92,7 @@
                         </div>
 
                         <div style="margin-bottom: 1.5rem;">
-                            <label style="font-weight: bold; font-size: 0.9rem;">Preferred Availability for :</label><br><br>
+                            <label style="font-weight: bold; font-size: 0.9rem;">Preferred Availability for:</label><br><br>
                             
                             <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
                                 <input type="checkbox" id="avail_saturday" name="availability[]" value="Saturday">

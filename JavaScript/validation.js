@@ -1,150 +1,116 @@
 /**
- * validation.js - Custom Client-Side Form Validation
- *
- * This file is used only on contact.html.
- *
- * It demonstrates:
- * 1. Variables
- * 2. Functions
- * 3. Conditions
- * 4. Regular expressions
- * 5. Events
- * 6. classList
- * 7. Form validation
+ * Form Validation Script for Kasi-Tech Solutions
+ * Supports both Contact Us and Enquiry pages
  */
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.querySelector('.contact-form');
+    
+    if (!contactForm) return;
 
-document.addEventListener("DOMContentLoaded", () => {
+    contactForm.setAttribute('novalidate', 'true');
 
-  // Find the contact form.
-  const form = document.getElementById("contactForm");
+    contactForm.addEventListener('submit', function(e) {
+        let isValid = true;
 
-  // Stop if this is not the contact page.
-  if (!form) return;
+        // Check if we are on the Enquiry page vs Contact Us page
+        const isEnquiryPage = document.getElementById('fullname') !== null;
 
+        let firstName, surname, phone, email;
+        let nameError = document.getElementById('nameError');
+        let phoneError = document.getElementById('phonenumberError');
+        let emailError = document.getElementById('EmailError');
 
-  /* ---------- EMAIL PATTERN ---------- */
+        // Clear previous error messages safely
+        if (nameError) nameError.textContent = '';
+        if (phoneError) phoneError.textContent = '';
+        if (emailError) emailError.textContent = '';
 
-  // This pattern checks for a basic structure such as:
-  // student@example.com
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (isEnquiryPage) {
+            // --- ENQUIRY FORM VALIDATION ---
+            firstName = document.getElementById('fullname');
+            email = document.getElementById('email');
+            phone = document.getElementById('phone');
+            const category = document.getElementById('category');
 
+            if (!firstName || firstName.value.trim() === '') {
+                if (nameError) nameError.textContent = 'Full name is required.';
+                isValid = false;
+            }
 
-  /* ---------- FORM SUBMISSION EVENT ---------- */
+            if (!email || email.value.trim() === '') {
+                if (emailError) emailError.textContent = 'Email address is required.';
+                isValid = false;
+            } else {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email.value.trim())) {
+                    if (emailError) emailError.textContent = 'Please enter a valid email address.';
+                    isValid = false;
+                }
+            }
 
-  form.addEventListener("submit", (event) => {
+            if (category && category.value === '') {
+                alert('Please select an enquiry category.');
+                isValid = false;
+            }
 
-    // Stop the browser from refreshing/submitting the page.
-    event.preventDefault();
+        } else {
+            // --- CONTACT US FORM VALIDATION ---
+            firstName = document.getElementById('Name');
+            surname = document.getElementById('Surname');
+            phone = document.getElementById('ContactNumber');
+            email = document.getElementById('Email');
 
-    // Assume the form is valid until an error is found.
-    let isValid = true;
+            let nameFieldValid = true;
+            let errorMessage = '';
 
+            if (!firstName || firstName.value.trim() === '') {
+                errorMessage = 'Please enter your first name.';
+                nameFieldValid = false;
+            }
+            if (!surname || surname.value.trim() === '') {
+                errorMessage = errorMessage ? 'Please enter both your first and last name.' : 'Please enter your last name.';
+                nameFieldValid = false;
+            }
 
-    /* ---------- FIND FORM ELEMENTS ---------- */
+            if (!nameFieldValid) {
+                if (nameError) nameError.textContent = errorMessage;
+                isValid = false;
+            }
 
-    const firstName =
-      document.getElementById("First name");
+            if (phone) {
+                const phoneVal = phone.value.trim();
+                const phoneRegex = /^(\+27|0)?[0-9]{9,10}$|^[0-9\s\-\+\(\)]{10,15}$/;
+                
+                if (phoneVal === '') {
+                    if (phoneError) phoneError.textContent = 'Phone number is required.';
+                    isValid = false;
+                } else if (!phoneRegex.test(phoneVal)) {
+                    if (phoneError) phoneError.textContent = 'Please enter a valid phone number.';
+                    isValid = false;
+                }
+            }
 
-     document.getElementById("Last name");
+            if (email) {
+                const emailVal = email.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const email =
-      document.getElementById("Email address");
+                if (emailVal === '') {
+                    if (emailError) emailError.textContent = 'Email address is required.';
+                    isValid = false;
+                } else if (!emailRegex.test(emailVal)) {
+                    if (emailError) emailError.textContent = 'Please enter a valid email address.';
+                    isValid = false;
+                }
+            }
+        }
 
-     const phone =
-      document.getElementById("Phone number");
-
-
-    /* ---------- RESET OLD ERRORS ---------- */
-
-    formStatus.classList.remove("success");
-
-    resetErrors([
-      fullName,
-      LastName,
-      email,
-      phone,
-      
-    ]);
-
-
-    /* ---------- VALIDATE FULL NAME ---------- */
-
-    if (fullName.value.trim().length < 3) {
-      showError(fullName, "nameError");
-      isValid = false;
-    }
-
-
-    /* ---------- VALIDATE lastname  ---------- */
-
-    if (!emailRegex.test(email.value.trim())) {
-      showError(lastname, "lastname Error");
-      isValid = false;
-    }
-
-
-    /* ---------- VALIDATE phone ---------- */
-
-    if (service.value === "") {
-      showError(phone, "phonenumberError");
-      isValid = false;
-    }
-
-
-    /* ---------- VALIDATE email ---------- */
-
-    if (message.value.trim().length < 10) {
-      showError(email, "emailError");
-      isValid = false;
-    }
-
-
-    /* ---------- SUCCESS ---------- */
-
-    if (isValid) {
-      formStatus.classList.add("success");
-
-      // Clear all entered values after successful validation.
-      form.reset();
-    }
-  });
-
-
-  /* ========================================================
-     FUNCTION: showError
-     Adds the error class to an input and displays its message.
-     ======================================================== */
-
-  function showError(inputElement, errorSpanId) {
-
-    inputElement.classList.add("error");
-
-    const errorSpan =
-      document.getElementById(errorSpanId);
-
-    if (errorSpan) {
-      errorSpan.classList.add("visible");
-    }
-  }
-
-
-  /* ========================================================
-     FUNCTION: resetErrors
-     Removes all old error styles/messages before validation.
-     ======================================================== */
-
-  function resetErrors(elements) {
-
-    elements.forEach((element) => {
-      element.classList.remove("error");
+        // Final Submissions Action
+        if (!isValid) {
+            e.preventDefault();
+        } else {
+            e.preventDefault();
+            alert('Thank you! Your submission has been received successfully.');
+            contactForm.reset();
+        }
     });
-
-    const errorSpans =
-      document.querySelectorAll(".error-message");
-
-    errorSpans.forEach((span) => {
-      span.classList.remove("visible");
-    });
-  }
-
 });
